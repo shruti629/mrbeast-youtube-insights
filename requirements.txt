@@ -1,0 +1,10 @@
+pandas
+numpy
+seaborn
+scikit-learn
+matplotlib
+google-api-python-client
+jupyter
+ipykernel
+streamlit
+-e .

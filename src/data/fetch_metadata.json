@@ -1,0 +1,26 @@
+{
+  "fetch_timestamp": "2025-07-24T00:05:37.165102",
+  "channel_info": {
+    "channel_id": "UCX6OQ3DkcsbYNE6H8uQQuVA",
+    "channel_name": "MrBeast",
+    "subscriber_count": 416000000,
+    "video_count": 886,
+    "view_count": 91069136189,
+    "uploads_playlist": "UUX6OQ3DkcsbYNE6H8uQQuVA"
+  },
+  "data_summary": {
+    "total_videos": 886,
+    "total_views": 91121736966,
+    "total_likes": 2540403917,
+    "total_comments": 33730331,
+    "avg_views_per_video": 102846204.25056434,
+    "date_range": {
+      "earliest": "2012-02-20T22:42:32+00:00",
+      "latest": "2025-07-20T16:00:01+00:00"
+    }
+  },
+  "files": {
+    "main_csv": "./data\\youtube_channel_data.csv",
+    "backup_csv": "./data\\youtube_backup_20250724_000537.csv"
+  }
+}
