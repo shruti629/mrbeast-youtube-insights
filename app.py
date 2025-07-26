@@ -1,64 +1,89 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.cluster import KMeans
 
-# Set page config
-st.set_page_config(page_title="MrBeast YouTube Dashboard", layout="wide")
+# Page config
+st.set_page_config(page_title="MrBeast YouTube Insights", layout="wide")
+st.title("📊 MrBeast YouTube Channel Dashboard")
 
-# Load data
+# --- Load data with cache ---
 @st.cache_data
 def load_data():
-    return pd.read_csv("data/youtube_clustered_data.csv")
+    df = pd.read_csv("src/data/youtube_channel_data_modified.csv")
+    df.columns = df.columns.str.strip()
+    df['Upload_Date'] = pd.to_datetime(df['Upload_Date'])
+    return df
 
-rt= load_data()
+# --- Clustering function ---
+@st.cache_data
+def add_clusters(df, n_clusters=3):
+    features = df[['Views', 'Likes', 'Comments']].copy().fillna(0)
+    model = KMeans(n_clusters=n_clusters, random_state=42)
+    df['Cluster'] = model.fit_predict(features)
+    return df
 
-st.title("📊 MrBeast YouTube Channel Analytics Dashboard")
+# Load and cluster data
+df = load_data()
+df = add_clusters(df)
 
-# Show basic stats
-st.subheader("📌 Overview")
-col1, col2, col3, col4 = st.columns(4)
-col1.metric("Total Videos", len(rt))
-col2.metric("Total Views", f"{rt['Views'].sum():,}")
-col3.metric("Total Likes", f"{rt['Likes'].sum():,}")
-col4.metric("Total Comments", f"{rt['Comments'].sum():,}")
+# --- Show raw data toggle ---
+if st.checkbox("Show Raw Data"):
+    st.write(df)
 
-# Show raw data
-with st.expander("🧾 See Raw Data"):
-    st.dataframe(rt)
-
-# Plot 1: Views vs Likes
-st.subheader("🔥 Views vs Likes")
+# --- Visual 1: Views vs Likes with clusters ---
+st.subheader("📍 Views vs Likes")
 fig1, ax1 = plt.subplots()
-sns.scatterplot(data=rt, x="Views", y="Likes", hue="Cluster", palette="tab10", ax=ax1)
-plt.xscale("log")
-plt.yscale("log")
+sns.scatterplot(data=df, x="Views", y="Likes", hue="Cluster", palette="Set2", ax=ax1)
+ax1.set_title("Views vs Likes by Cluster")
 st.pyplot(fig1)
 
-# Plot 2: Cluster distribution
-st.subheader("🎯 Cluster Distribution")
+# --- Visual 2: Cluster Distribution ---
+st.subheader("🧠 Cluster Distribution of Videos")
 fig2, ax2 = plt.subplots()
-sns.countplot(data=rt, x="Cluster", palette="Set2", ax=ax2)
+sns.countplot(data=df, x="Cluster", palette="Set3", ax=ax2)
+ax2.set_title("Video Count per Cluster")
 st.pyplot(fig2)
 
-# Plot 3: Uploads over time
-st.subheader("📅 Upload Trend Over Time")
-rt['UploadDate'] = pd.to_datetime(rt['UploadDate'])
-rt['YearMonth'] = rt['UploadDate'].dt.to_period('M').astype(str)
-monthly = rt.groupby('YearMonth').size().reset_index(name='Uploads')
-
+# --- Visual 3: Views Over Time ---
+st.subheader("⏱️ Views Over Time")
+df_sorted = df.sort_values("Upload_Date")
 fig3, ax3 = plt.subplots()
-sns.lineplot(data=monthly, x='YearMonth', y='Uploads', marker='o', ax=ax3)
-plt.xticks(rotation=45)
+ax3.plot(df_sorted["Upload_Date"], df_sorted["Views"], marker='o', linestyle='-')
+ax3.set_xlabel("Upload_Date")
+ax3.set_ylabel("Views")
+ax3.set_title("Views Growth Over Time")
 st.pyplot(fig3)
 
-# Plot 4: Engagement per cluster
-st.subheader("📈 Engagement by Cluster")
-engage_df = rt.groupby('Cluster')[['Views', 'Likes', 'Comments']].mean().reset_index()
-
-fig4, ax4 = plt.subplots()
-engage_df.plot(kind='bar', x='Cluster', ax=ax4)
-plt.title("Avg Engagement per Cluster")
+# --- Visual 4: Views per Video ---
+st.subheader("🎬 Views Per Video")
+fig4, ax4 = plt.subplots(figsize=(12, 6))
+top_videos = df.sort_values("Views", ascending=False)
+sns.barplot(data=top_videos, x="Title", y="Views", palette="viridis", ax=ax4)
+plt.xticks(rotation=90)
+ax4.set_title("Views per Video")
 st.pyplot(fig4)
 
-st.markdown("💡 *Built with Streamlit. Data collected using YouTube Data API.*")
+# --- Visual 5: Engagement Pie Chart ---
+st.subheader("❤️ Engagement Distribution")
+engagement_data = df[['Likes', 'Comments']].sum()
+fig5, ax5 = plt.subplots()
+ax5.pie(engagement_data, labels=engagement_data.index, autopct='%1.1f%%', colors=['#ff9999','#66b3ff'])
+ax5.set_title("Total Engagement")
+st.pyplot(fig5)
+
+# --- Predict video performance (simple rule-based for now) ---
+st.subheader("📈 Performance Prediction")
+threshold = df["Views"].mean()
+df["Performance"] = df["Views"].apply(lambda x: "High" if x >= threshold else "Low")
+
+col1, col2 = st.columns(2)
+with col1:
+    st.metric("Average Views", f"{threshold:.0f}")
+with col2:
+    st.write("Prediction Rule: Views >= Avg → High | Else → Low")
+
+st.dataframe(df[['Title', 'Views', 'Likes', 'Comments', 'Cluster', 'Performance']])
+
+
