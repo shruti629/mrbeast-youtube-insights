@@ -37,8 +37,10 @@ This project uses data science and machine learning techniques to cluster videos
 
 ## 📊 Dashboard
 ![git-view](https://github.com/shruti629/mrbeast-youtube-insights/blob/5317ef38119a39aad039df7fc64a2c96f0790b2b/MrBeast%20YouTube%20Insights%20-%20Google%20Chrome%207_27_2025%201_52_46%20PM.png)
-| 🔹 Line Chart – Views over Time                                                                           | 🔹 Bar Chart – Views per Video                                                                     |
-| --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| ![views-time](https://github.com/shruti629/mrbeast-youtube-insights/blob/main/assets/line_views_time.png) | ![bar-views](https://github.com/shruti629/mrbeast-youtube-insights/blob/main/assets/bar_views.png) |
+| 🔹 Line Chart – Views over Time                                                                           | 
+| --------------------------------------------------------------------------------------------------------- |
+| ![views-time](https://github.com/shruti629/mrbeast-youtube-insights/blob/78321ed0c0af4886c83c474235ba21e875ec3431/mrbeast-youtube-insights_src_notebooks_jupiter_notebook.ipynb%20at%20main%20%C2%B7%20shruti629_mrbeast-youtube-insights%20-%20Google%20Chrome%207_27_2025%202_05_27%20PM.png) |
+🔹 Bar Chart – Views per Video                                                                                                            |-------------------------------------------------------------------------------------------------- |
+ ![bar-views](https://github.com/shruti629/mrbeast-youtube-insights/blob/main/assets/bar_views.png) |
 
 
