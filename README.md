@@ -35,7 +35,8 @@ This project uses data science and machine learning techniques to cluster videos
 
       streamlit run app.py
 
-## 📊 Dashboard Insights
+## 📊 Dashboard
+![git-view](https://github.com/shruti629/mrbeast-youtube-insights/blob/5317ef38119a39aad039df7fc64a2c96f0790b2b/MrBeast%20YouTube%20Insights%20-%20Google%20Chrome%207_27_2025%201_52_46%20PM.png)
 | 🔹 Line Chart – Views over Time                                                                           | 🔹 Bar Chart – Views per Video                                                                     |
 | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | ![views-time](https://github.com/shruti629/mrbeast-youtube-insights/blob/main/assets/line_views_time.png) | ![bar-views](https://github.com/shruti629/mrbeast-youtube-insights/blob/main/assets/bar_views.png) |
