@@ -13,7 +13,7 @@ st.title("📊 MrBeast YouTube Channel Dashboard")
 # --- Load data with cache ---
 @st.cache_data
 def load_data():
-    df = pd.read_csv("src\data\youtube_channel_data_modified.csv")
+    df = pd.read_csv("src/data/youtube_channel_data_modified.csv")
     df.columns = df.columns.str.strip()
     df['Upload_Date'] = pd.to_datetime(df['Upload_Date'])
     return df
